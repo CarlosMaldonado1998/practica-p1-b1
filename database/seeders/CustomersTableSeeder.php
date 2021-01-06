@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customers;
 use Illuminate\Database\Seeder;
 
 class CustomersTableSeeder extends Seeder
@@ -13,6 +14,16 @@ class CustomersTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Customers::truncate();
+        $faker = \Faker\Factory::create();
+
+        for ($i = 0; $i < 10; $i++) {
+            Customers::create([
+                'name' => $faker->firstName,
+                'lastname' => $faker->lastName,
+                'document' => $faker->fileExtension,
+            ]);
+        }
+
     }
 }
