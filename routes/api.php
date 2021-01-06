@@ -14,18 +14,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', 'App\Http\Controllers\UserController@register');
+Route::post('login', 'App\Http\Controllers\UserController@authenticate');
+Route::get('products', 'App\Http\Controllers\ProductController@store');
+Route::get('products/{product}', 'App\Http\Controllers\ProductController@show');
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('user', 'App\Http\Controllers\UserController@getAuthenticatedUser');
+
+    //Customers
+    Route::get('customers', 'App\Http\Controllers\CustomerController@index');
+    Route::get('customers/{customer}', 'App\Http\Controllers\CustomerController@show');
+    Route::post('customers', 'App\Http\Controllers\CustomerController@store');
+    Route::put('customers/{customer}', 'App\Http\Controllers\CustomerController@update');
+    Route::delete('customers/{customer}', 'App\Http\Controllers\CustomerController@delete');
+
+    //Products
+    Route::post('products', 'App\Http\Controllers\ProductController@index');
+    Route::put('products/{product}', 'App\Http\Controllers\ProductController@update');
+    Route::delete('products/{product}', 'App\Http\Controllers\ProductController@delete');
 });
 
-Route::get('customers', 'App\Http\Controllers\CustomerController@index');
-Route::get('customers/{customer}', 'App\Http\Controllers\CustomerController@show');
-Route::post('customers', 'App\Http\Controllers\CustomerController@store');
-Route::put('customers/{customer}', 'App\Http\Controllers\CustomerController@update');
-Route::delete('customers/{customer}', 'App\Http\Controllers\CustomerController@delete');
 
-Route::get('products', 'App\Http\Controllers\ProductController@index');
-Route::get('products/{product}', 'App\Http\Controllers\ProductController@show');
-Route::post('products', 'App\Http\Controllers\ProductController@store');
-Route::put('products/{product}', 'App\Http\Controllers\ProductController@update');
-Route::delete('products/{product}', 'App\Http\Controllers\ProductController@delete');
+
+
+
