@@ -14,4 +14,9 @@ class Products extends Model
         'price',
         'status',
     ];
+
+    public function customers()
+    {
+        return $this->belongsTo('App\Models\Customers');
+    }
 }

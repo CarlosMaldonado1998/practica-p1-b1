@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -17,8 +18,10 @@ class CustomerController extends Controller
     }
     public function store(Request $request)
     {
-        $customer = Customers::create($request->all());
-        return response()->json($customer, 201);
+        $customer = new Customer($request->all());
+        $customer->user_id = Auth::id();
+        $customer->save();
+        return response()->json(new CustomerResource($customer), 201);
     }
     public function update(Request $request, Customers $customer)
     {
